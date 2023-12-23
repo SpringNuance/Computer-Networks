@@ -1,0 +1,55 @@
+python3 client_IPv4.py
+$ sudo chmod +x openvpn-install.sh
+ip addr show enp0s3
+sudo bash openvpn-install.sh
+sudo wireshark
+
+openvpn --config /root/chatserver.ovpn
+sudo -b openvpn /root/chatserver.ovpn
+sudo -b openvpn /root/chatclient.ovpn
+
+//////
+sudo apt install wireguard
+
+apt install wireguard-tools
+
+wg genkey | tee privatekey | wg pubkey > publickey
+cat privatekey
+cat publickey
+
+sudo vim /etc/wireguard/wg0.conf
+
+// Server
+[Interface]
+PrivateKey=eN4zEznryYpnBSp4BMgPBRaHKopcDlf5Jqv8QK3/m20=
+Address=10.0.0.1/8
+SaveConfig=true               
+PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o enp0s3 -j MASQUERADE
+PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o etnp0s3 -j MASQUERADE
+ListenPort=34000
+
+sudo ip link delete enp5s0 will remove virtual interface (link) enp5s0
+
+wg-quick up wg0
+sudo wg
+
+/// Client
+[Interface]
+PrivateKey=iJ2iocUGHmPEJDp3NEktQrofTm/v1A8o7f6Hk2S4omk=
+Address=10.0.0.2/8
+SaveConfig=true     
+
+[Peer]
+PublicKey=8ANLSQ+Hqv684z+eF6rNk7fi6r24mnTwtqpdkZZ5ExQ=   
+Endpoint=10.0.2.15:34000
+AllowedIPs=0.0.0.0/0
+PersistentKeepalive=30
+
+sudo wg set wg0 peer 
+
+public of client
+sudo wg set wg0 peer 1fc4OWsfIG2XzBD2HqY92J3xbNLIn4ObBAgEVCx403U= allowed-ips 10.0.0.2/32
+
+wg-quick down wg0
+
+wg-quick up wg0

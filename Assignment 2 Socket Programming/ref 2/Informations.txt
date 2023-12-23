@@ -1,0 +1,54 @@
+Run : 
+
+1/ Run server 
+2/ Run client and type username 
+3/ Run antoher client and type username 
+4/ Run another client and type username 
+
+Functionnality : 
+
+Send normal message and show that all people connected to chat receive the message
+Send Private message : /pm => Type Username 
+By default all person who are connected to the chat receive the message 
+
+
+Server Code : 
+
+We have 2 classes : 
+
+	Server class : 
+		Init server function : 
+
+		Initialisation de la classe : Port, List of thread clients, Adress server, Backlog is number of client which can connected to the server chat at the same time 
+		
+		Run server function :
+
+		A loop who created the socket and define the socket (port + IP adress server chat) 
+		In fact the main goal of the server is to listen the port and manage incoming information (send message + new client which would like to conect to the server chat)
+		The server accept the new client 
+		For each client who are connected to the chat, the server manage the creation of the thread clients and then add the thread to the list of client thread
+		
+		Client class : 
+		Traitement des thread client cote server. The server decode all received informations  which come from the right thread client
+		According to the messages received by the server, the server executes a particular task 
+		For example when a new user are connected to the chat, the server send a message to all other user in order to notify them that a new user has joined the chat 
+		
+		Manage the thread of each client which are conntected to the server 
+			One thread for each client 
+			10 clients allow to connect the server chat		
+		
+	Client class : 
+		
+		One infity loop who receive and then decode all message who he receives and the print the message
+		One infity loop who for send message : Encode the message and the send it to the server 
+		The loop stop when the client type QUIT in the python console
+		The main of this classe : 
+			- create socket 
+			- Print message of each command that the user can use 
+
+
+In fact the major treatment is done server side
+
+		 
+		
+			
